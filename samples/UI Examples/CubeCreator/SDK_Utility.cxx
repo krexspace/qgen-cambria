@@ -187,7 +187,7 @@ void RemoveCubes()
 }
 
 // create a new cube
-void CreateCubeDetailed(    char* pCubeName, 
+void CreateCubeDetailed( char* pCubeName, 
                         double pX, 
                         double pY, 
                         double pZ, 

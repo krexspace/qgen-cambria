@@ -9,6 +9,8 @@ ENDIF()
 FBX_PROJECT(UI_Example_CubeCreator .)
 SET(FBX_TARGET_SOURCE
     "resource.h"
+    "gen_core.cxx"
+    "gen_core.h"
     "SDK_Utility.cxx"
     "SDK_Utility.h"
     "stdafx.h"

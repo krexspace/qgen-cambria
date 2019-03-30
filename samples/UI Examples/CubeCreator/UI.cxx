@@ -83,6 +83,8 @@ void FillTreeView(const HWND mainHwnd);
 
 static bool gAutoQuit = false;
 
+#define WIN_UI_ENABLED 0
+#if WIN_UI_ENABLED
 //----------------------------------------------------------
 // entry point for the application
 int APIENTRY _tWinMain(
@@ -126,6 +128,8 @@ int APIENTRY _tWinMain(
 
     return (int) msg.wParam;
 }
+
+#endif
 
 //
 //  FUNCTION: UIRegisterClass()
