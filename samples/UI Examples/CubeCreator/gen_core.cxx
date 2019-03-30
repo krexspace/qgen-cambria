@@ -153,6 +153,82 @@ namespace qg {
 		return GetRootNode()->GetName();
 	}
 
+	//-------------------------------EXPORT--------------------------------------//
+	//------------------------------------------------------------------------------//
+
+	// to save a scene to a FBX file
+	bool Export(
+		const char* pFilename,
+		int pFileFormat
+	)
+	{
+		return SaveScene(gSdkManager, gScene, pFilename, pFileFormat, true); // true -> embed texture file
+	}
+
+	// to save a scene to a FBX file
+	bool SaveScene(FbxManager* pSdkManager, FbxDocument* pScene, const char* pFilename, int pFileFormat, bool pEmbedMedia)
+	{
+		if (pSdkManager == NULL) return false;
+		if (pScene == NULL) return false;
+		if (pFilename == NULL) return false;
+
+		bool lStatus = true;
+
+		// Create an exporter.
+		FbxExporter* lExporter = FbxExporter::Create(pSdkManager, "");
+
+		if (pFileFormat < 0 || pFileFormat >= pSdkManager->GetIOPluginRegistry()->GetWriterFormatCount())
+		{
+			// Write in fall back format if pEmbedMedia is true
+			pFileFormat = pSdkManager->GetIOPluginRegistry()->GetNativeWriterFormat();
+
+			if (!pEmbedMedia)
+			{
+				//Try to export in ASCII if possible
+				int lFormatIndex, lFormatCount = pSdkManager->GetIOPluginRegistry()->GetWriterFormatCount();
+
+				for (lFormatIndex = 0; lFormatIndex<lFormatCount; lFormatIndex++)
+				{
+					if (pSdkManager->GetIOPluginRegistry()->WriterIsFBX(lFormatIndex))
+					{
+						FbxString lDesc = pSdkManager->GetIOPluginRegistry()->GetWriterFormatDescription(lFormatIndex);
+						char *lASCII = "ascii";
+						if (lDesc.Find(lASCII) >= 0)
+						{
+							pFileFormat = lFormatIndex;
+							break;
+						}
+					}
+				}
+			}
+		}
+
+		// Initialize the exporter by providing a filename.
+		if (lExporter->Initialize(pFilename, pFileFormat, pSdkManager->GetIOSettings()) == false)
+		{
+			return false;
+		}
+
+		// Set the export states. By default, the export states are always set to 
+		// true except for the option eEXPORT_TEXTURE_AS_EMBEDDED. The code below 
+		// shows how to change these states.
+		IOS_REF.SetBoolProp(EXP_FBX_MATERIAL, true);
+		IOS_REF.SetBoolProp(EXP_FBX_TEXTURE, true);
+		IOS_REF.SetBoolProp(EXP_FBX_EMBEDDED, pEmbedMedia);
+		IOS_REF.SetBoolProp(EXP_FBX_SHAPE, true);
+		IOS_REF.SetBoolProp(EXP_FBX_GOBO, true);
+		IOS_REF.SetBoolProp(EXP_FBX_ANIMATION, true);
+		IOS_REF.SetBoolProp(EXP_FBX_GLOBAL_SETTINGS, true);
+
+		// Export the scene.
+		lStatus = lExporter->Export(pScene);
+
+		// Destroy the exporter.
+		lExporter->Destroy();
+
+		return lStatus;
+	}
+
 	//-------------------------------GENERATOR--------------------------------------//
 	//------------------------------------------------------------------------------//
 
@@ -371,6 +447,8 @@ namespace qg {
 	}
 }
 
+
+
 //-------------------------------MAIN--------------------------------------//
 //------------------------------------------------------------------------------//
 
@@ -390,8 +468,23 @@ int main(int argc, const char* argv[])
 		outFileName += argv[1] + string("_") + to_string(ms.count()) + ".fbx";
 	}
 	else {
-		cout << "No args: Using default file name\n";
+		cout << "No args: Using default file name: ";
 		outFileName += to_string(ms.count()) + ".fbx";
 	}
-	cout << outFileName;
+	cout << outFileName << endl;
+
+	qg::CreateScene();
+	// create a new cube with option selected
+	//args bool (lWithTexture, lWithAnimation);
+	qg::CreateCube(false, false);
+
+	char gszOutputFile[_MAX_PATH];           // File name to export
+	int  gWriteFileFormat = -1;             // Write file format
+
+	qg::Export(outFileName.c_str(), gWriteFileFormat);
+
+
+	// dont forget to delete the SdkManager 
+	// and all objects created by the SDK manager
+	qg::DestroySdkObjects(qg::gSdkManager, true);
 }

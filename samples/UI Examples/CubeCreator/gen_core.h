@@ -16,6 +16,21 @@ namespace qg {
 		bool pExitStatus
 	);
 
+	// to save a scene to a FBX file
+	bool Export(
+		const char* pFilename,
+		int pFileFormat
+	);
+
+	// to save a scene to a FBX file
+	bool SaveScene(
+		FbxManager* pSdkManager,
+		FbxDocument* pScene,
+		const char* pFilename,
+		int pFileFormat,
+		bool pEmbedMedia
+	);
+
 	// to create a basic scene
 	bool CreateScene();
 
