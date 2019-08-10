@@ -1,6 +1,6 @@
 
 // use the fbxsdk.h
-#include <fbxsdk.h>
+#include "BaseWrapper.h"
 
 namespace qg {
 	// to create an instance of the SDK manager
@@ -79,9 +79,14 @@ namespace qg {
 	);
 
 	// Create a cube mesh
-	FbxNode* CreateCubeMesh(
-		FbxScene* pScene,
-		char* pName
-	);
+	FbxNode* CreateCubeMesh(FbxScene* pScene, char* pName);
 
+	FbxNode* CreateGenMesh(FbxScene* pScene, char* pName);
+
+	//------------------TEMP TESTS---------------------//
+	//-------------------------------  MAIN  --------------------------------------//
+	void testPositionRadialSpreader();
+
+	void invokeTests();
+	
 }

@@ -1,4 +1,10 @@
 #include "gen_core.h"
+#include "ComputeLib.h"
+
+//--
+#include <iostream>
+#include <string>
+#include <chrono>
 
 namespace qg {
 	// declare global
@@ -300,6 +306,7 @@ namespace qg {
 		gScene->GetRootNode()->AddChild(lCube);
 	}
 
+	// http://download.autodesk.com/us/fbx/20112/FBX_SDK_HELP/index.html?url=WS73099cc142f487551fea285e1221e4f9ff8-7f56.htm,topicNumber=d0e4642
 	// Create a cube mesh. 
 	FbxNode* CreateCubeMesh(FbxScene* pScene, char* pName)
 	{
@@ -326,26 +333,33 @@ namespace qg {
 		lMesh->InitControlPoints(24);
 		FbxVector4* lControlPoints = lMesh->GetControlPoints();
 
+		// Here we set the values of the mesh’s control point array, one face at a time
+		// Face 1
 		lControlPoints[0] = lControlPoint0;
 		lControlPoints[1] = lControlPoint1;
 		lControlPoints[2] = lControlPoint2;
 		lControlPoints[3] = lControlPoint3;
+		// Face 2 and so on
 		lControlPoints[4] = lControlPoint1;
 		lControlPoints[5] = lControlPoint5;
 		lControlPoints[6] = lControlPoint6;
 		lControlPoints[7] = lControlPoint2;
+
 		lControlPoints[8] = lControlPoint5;
 		lControlPoints[9] = lControlPoint4;
 		lControlPoints[10] = lControlPoint7;
 		lControlPoints[11] = lControlPoint6;
+		
 		lControlPoints[12] = lControlPoint4;
 		lControlPoints[13] = lControlPoint0;
 		lControlPoints[14] = lControlPoint3;
 		lControlPoints[15] = lControlPoint7;
+
 		lControlPoints[16] = lControlPoint3;
 		lControlPoints[17] = lControlPoint2;
 		lControlPoints[18] = lControlPoint6;
 		lControlPoints[19] = lControlPoint7;
+		
 		lControlPoints[20] = lControlPoint1;
 		lControlPoints[21] = lControlPoint0;
 		lControlPoints[22] = lControlPoint4;
@@ -365,32 +379,210 @@ namespace qg {
 		nVec.Add(lNormalZPos);
 		nVec.Add(lNormalZPos);
 		nVec.Add(lNormalZPos);
-		nVec.Add(lNormalXPos);
-		nVec.Add(lNormalXPos);
-		nVec.Add(lNormalXPos);
-		nVec.Add(lNormalXPos);
-		nVec.Add(lNormalZNeg);
-		nVec.Add(lNormalZNeg);
-		nVec.Add(lNormalZNeg);
-		nVec.Add(lNormalZNeg);
-		nVec.Add(lNormalXNeg);
-		nVec.Add(lNormalXNeg);
-		nVec.Add(lNormalXNeg);
-		nVec.Add(lNormalXNeg);
-		nVec.Add(lNormalYPos);
-		nVec.Add(lNormalYPos);
-		nVec.Add(lNormalYPos);
-		nVec.Add(lNormalYPos);
-		nVec.Add(lNormalYNeg);
-		nVec.Add(lNormalYNeg);
-		nVec.Add(lNormalYNeg);
-		nVec.Add(lNormalYNeg);
 
+		nVec.Add(lNormalXPos);
+		nVec.Add(lNormalXPos);
+		nVec.Add(lNormalXPos);
+		nVec.Add(lNormalXPos);
 
+		nVec.Add(lNormalZNeg);
+		nVec.Add(lNormalZNeg);
+		nVec.Add(lNormalZNeg);
+		nVec.Add(lNormalZNeg);
+
+		nVec.Add(lNormalXNeg);
+		nVec.Add(lNormalXNeg);
+		nVec.Add(lNormalXNeg);
+		nVec.Add(lNormalXNeg);
+
+		nVec.Add(lNormalYPos);
+		nVec.Add(lNormalYPos);
+		nVec.Add(lNormalYPos);
+		nVec.Add(lNormalYPos);
+
+		nVec.Add(lNormalYNeg);
+		nVec.Add(lNormalYNeg);
+		nVec.Add(lNormalYNeg);
+		nVec.Add(lNormalYNeg);
+		
 		// Array of polygon vertices.
-		int lPolygonVertices[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,12, 13,
-			14, 15, 16, 17, 18, 19, 20, 21, 22, 23 };
+		int lPolygonVertices[] = { 
+			0, 1, 2, 3, 
+			4, 5, 6, 7, 
+			8, 9, 10, 11,
+			12, 13, 14, 15,
+			16, 17, 18, 19,
+			20, 21, 22, 23
+		};
 
+		// Create UV for Diffuse channel.
+		FbxGeometryElementUV* lUVDiffuseElement = lMesh->CreateElementUV("DiffuseUV");
+		FBX_ASSERT(lUVDiffuseElement != NULL);
+		lUVDiffuseElement->SetMappingMode(FbxGeometryElement::eByPolygonVertex);
+		lUVDiffuseElement->SetReferenceMode(FbxGeometryElement::eIndexToDirect);
+
+		FbxVector2 lVectors0(0, 0);
+		FbxVector2 lVectors1(1, 0);
+		FbxVector2 lVectors2(1, 1);
+		FbxVector2 lVectors3(0, 1);
+
+		auto& uvVec = lUVDiffuseElement->GetDirectArray();
+		uvVec.Add(lVectors0);
+		uvVec.Add(lVectors1);
+		uvVec.Add(lVectors2);
+		uvVec.Add(lVectors3);
+
+		//Now we have set the UVs as eIndexToDirect reference and in eByPolygonVertex  mapping mode
+		//we must update the size of the index array.
+		// TODO QG auto&
+		lUVDiffuseElement->GetIndexArray().SetCount(24);
+
+		// Create polygons. Assign texture and texture UV indices.
+		for (i = 0; i < 6; i++)
+		{
+			// all faces of the cube have the same texture
+			lMesh->BeginPolygon(-1, -1, -1, false);
+
+			for (j = 0; j < 4; j++)
+			{
+				// Control point index
+				lMesh->AddPolygon(lPolygonVertices[i * 4 + j]);
+
+				// update the index array of the UVs that map the texture to the face
+				lUVDiffuseElement->GetIndexArray().SetAt(i * 4 + j, j);
+			}
+
+			lMesh->EndPolygon();
+		}
+
+		// create a FbxNode
+		FbxNode* lNode = FbxNode::Create(pScene, pName);
+
+		// set the node attribute
+		lNode->SetNodeAttribute(lMesh);
+
+		// set the shading mode to view texture
+		lNode->SetShadingMode(FbxNode::eTextureShading);
+
+		// rescale the cube
+		lNode->LclScaling.Set(FbxVector4(0.3, 0.3, 0.3));
+
+		// return the FbxNode
+		return lNode;
+	}
+
+	// Create a generic mesh with builder. 
+	FbxNode* CreateGenMesh(FbxScene* pScene, char* pName)
+	{
+		int i, j;
+		FbxMesh* lMesh = FbxMesh::Create(pScene, pName);
+
+		FbxVector4 lControlPoint0(-50, 0, 50);
+		FbxVector4 lControlPoint1(50, 0, 50);
+		FbxVector4 lControlPoint2(50, 100, 50);
+		FbxVector4 lControlPoint3(-50, 100, 50);
+		FbxVector4 lControlPoint4(-50, 0, -50);
+		FbxVector4 lControlPoint5(50, 0, -50);
+		FbxVector4 lControlPoint6(50, 100, -50);
+		FbxVector4 lControlPoint7(-50, 100, -50);
+
+		FbxVector4 lNormalXPos(1, 0, 0);
+		FbxVector4 lNormalXNeg(-1, 0, 0);
+		FbxVector4 lNormalYPos(0, 1, 0);
+
+		FbxVector4 lNormalYNeg(0, -1, 0);
+		FbxVector4 lNormalZPos(0, 0, 1);
+		FbxVector4 lNormalZNeg(0, 0, -1);
+
+		// Create control points.
+		lMesh->InitControlPoints(24);
+		FbxVector4* lControlPoints = lMesh->GetControlPoints();
+
+		// Here we set the values of the mesh’s control point array, one face at a time
+		// Face 1
+		lControlPoints[0] = lControlPoint0;
+		lControlPoints[1] = lControlPoint1;
+		lControlPoints[2] = lControlPoint2;
+		lControlPoints[3] = lControlPoint3;
+		// Face 2 and so on
+		lControlPoints[4] = lControlPoint1;
+		lControlPoints[5] = lControlPoint5;
+		lControlPoints[6] = lControlPoint6;
+		lControlPoints[7] = lControlPoint2;
+
+		lControlPoints[8] = lControlPoint5;
+		lControlPoints[9] = lControlPoint4;
+		lControlPoints[10] = lControlPoint7;
+		lControlPoints[11] = lControlPoint6;
+
+		lControlPoints[12] = lControlPoint4;
+		lControlPoints[13] = lControlPoint0;
+		lControlPoints[14] = lControlPoint3;
+		lControlPoints[15] = lControlPoint7;
+
+		lControlPoints[16] = lControlPoint3;
+		lControlPoints[17] = lControlPoint2;
+		lControlPoints[18] = lControlPoint6;
+		lControlPoints[19] = lControlPoint7;
+
+		lControlPoints[20] = lControlPoint1;
+		lControlPoints[21] = lControlPoint0;
+		lControlPoints[22] = lControlPoint4;
+		lControlPoints[23] = lControlPoint5;
+
+		lMesh->GenerateNormals(true);
+		/*
+		// We want to have one normal for each vertex (or control point),
+		// so we set the mapping mode to eByControlPoint.
+		FbxGeometryElementNormal* lGeometryElementNormal = lMesh->CreateElementNormal();
+
+		lGeometryElementNormal->SetMappingMode(FbxGeometryElement::eByControlPoint);
+
+		// Set the normal values for every control point.
+		lGeometryElementNormal->SetReferenceMode(FbxGeometryElement::eDirect);
+
+		
+
+		auto& nVec = lGeometryElementNormal->GetDirectArray();
+		nVec.Add(lNormalZPos);
+		nVec.Add(lNormalZPos);
+		nVec.Add(lNormalZPos);
+		nVec.Add(lNormalZPos);
+
+		nVec.Add(lNormalXPos);
+		nVec.Add(lNormalXPos);
+		nVec.Add(lNormalXPos);
+		nVec.Add(lNormalXPos);
+
+		nVec.Add(lNormalZNeg);
+		nVec.Add(lNormalZNeg);
+		nVec.Add(lNormalZNeg);
+		nVec.Add(lNormalZNeg);
+
+		nVec.Add(lNormalXNeg);
+		nVec.Add(lNormalXNeg);
+		nVec.Add(lNormalXNeg);
+		nVec.Add(lNormalXNeg);
+
+		nVec.Add(lNormalYPos);
+		nVec.Add(lNormalYPos);
+		nVec.Add(lNormalYPos);
+		nVec.Add(lNormalYPos);
+
+		nVec.Add(lNormalYNeg);
+		nVec.Add(lNormalYNeg);
+		nVec.Add(lNormalYNeg);
+		nVec.Add(lNormalYNeg);
+		*/
+		// Array of polygon vertices.
+		int lPolygonVertices[] = {
+			0, 1, 2, 3,
+			4, 5, 6, 7,
+			8, 9, 10, 11,
+			12, 13, 14, 15,
+			16, 17, 18, 19,
+			20, 21, 22, 23
+		};
 
 		// Create UV for Diffuse channel.
 		FbxGeometryElementUV* lUVDiffuseElement = lMesh->CreateElementUV("DiffuseUV");
@@ -450,12 +642,26 @@ namespace qg {
 }
 
 
+namespace qg {
+	//-------------------------------  MAIN  --------------------------------------//
+	void testPositionRadialSpreader() {
+		auto scaleVariator = [](const SpreaderInput& p) {
+			// do compute
 
-//-------------------------------  MAIN  --------------------------------------//
+			return 1.0f;
+		};
+		SpreaderInput p = {500, 10.0f, 0, 1};
+		auto pos_list = positionRadialSpreader(p, scaleVariator);
+		for (auto &i : pos_list) {
+			std::cout << '[' << i.x << ',' << i.y << ',' << i.z << ']' << std::endl;
+		}
+	}
 
-#include <iostream>
-#include <string>
-#include <chrono>
+	void invokeTests() {
+		testPositionRadialSpreader();
+	}
+}
+
 using namespace std::chrono;
 using namespace std;
 
@@ -479,7 +685,7 @@ int main(int argc, const char* argv[])
 	//args bool (lWithTexture, lWithAnimation);
 	qg::CreateCube(false, false);
 
-	char gszOutputFile[_MAX_PATH];           // File name to export
+	//char gszOutputFile[_MAX_PATH];           // File name to export
 	int  gWriteFileFormat = -1;             // Write file format
 
 	qg::Export(outFileName.c_str(), gWriteFileFormat);
@@ -487,4 +693,6 @@ int main(int argc, const char* argv[])
 	// dont forget to delete the SdkManager 
 	// and all objects created by the SDK manager
 	qg::DestroySdkObjects(qg::gSdkManager, true);
+
+	//qg::invokeTests();
 }
