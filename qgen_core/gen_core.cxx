@@ -478,7 +478,7 @@ namespace qg {
 		FbxMesh* lMesh = FbxMesh::Create(pScene, pName);
 		auto scaleVariator = [](const SpreaderInput& p) {
 			// do compute
-
+			// Logic
 			return 1.0f;
 		};
 		const int RING_POINT_COUNT = 10;
@@ -489,6 +489,8 @@ namespace qg {
 			SpreaderInput p = { RING_POINT_COUNT, 10.0f, 0, s, STEP_DELTA, 1 };
 			auto prev_pos_list = pos_list;
 			pos_list = positionRadialSpreader(p, scaleVariator);
+			// Add a ring of faces
+
 			for (auto &p : pos_list) {
 				std::cout << '[' << p.x << ',' << p.y << ',' << p.z << ']' << std::endl;
 			}

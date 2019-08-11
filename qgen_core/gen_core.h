@@ -3,6 +3,18 @@
 #include "BaseWrapper.h"
 
 namespace qg {
+	class QuadFace {
+		int indices[4] = { -1,-1,-1,-1 };
+		float uvs[2 * 4]; // four pairs
+	};
+	class MeshStructure {
+		vector<glm::vec3> vertPositions;
+		vector<int> quadFaces;
+
+		// Key mappping structure used for queries
+		map<int, QuadFace*[]> indexFaceMap;
+	};
+
 	// to create an instance of the SDK manager
 	bool InitializeSdkObjects(
 		FbxManager*& pSdkManager,
