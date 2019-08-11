@@ -16,10 +16,10 @@ namespace qg {
 
 		vector<glm::vec3> pos_list;
 		// initialize to x displacement along radius
-		glm::vec3 next_pos(p.radius, 0.0f, 0.0f);
+		glm::vec3 next_pos(p.radius, p.step_index * p.step_delta, 0.0f);
 		SpreaderInput p1 = p; //copy
 		for (int i = 1; i <= C; i++) {
-			p1.index = i;
+			p1.radial_index = i;
 			float scaleFactor = scale_variator_lambda(p1);
 			glm::vec3 scaled_pos = next_pos * scaleFactor;
 			pos_list.push_back(scaled_pos);

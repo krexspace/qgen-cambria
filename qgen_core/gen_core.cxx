@@ -285,7 +285,7 @@ namespace qg {
 		bool pAnimate
 	)
 	{
-		FbxNode* lCube = CreateCubeMesh(gScene, pCubeName);
+		FbxNode* lCube = CreateGenMesh(gScene, pCubeName);
 
 		// set the cube position
 		lCube->LclTranslation.Set(FbxVector4(pX, pY, pZ));
@@ -315,6 +315,7 @@ namespace qg {
 
 		FbxVector4 lControlPoint0(-50, 0, 50);
 		FbxVector4 lControlPoint1(50, 0, 50);
+
 		FbxVector4 lControlPoint2(50, 100, 50);
 		FbxVector4 lControlPoint3(-50, 100, 50);
 		FbxVector4 lControlPoint4(-50, 0, -50);
@@ -470,13 +471,29 @@ namespace qg {
 		// return the FbxNode
 		return lNode;
 	}
-
 	// Create a generic mesh with builder. 
 	FbxNode* CreateGenMesh(FbxScene* pScene, char* pName)
 	{
 		int i, j;
 		FbxMesh* lMesh = FbxMesh::Create(pScene, pName);
+		auto scaleVariator = [](const SpreaderInput& p) {
+			// do compute
 
+			return 1.0f;
+		};
+		const int RING_POINT_COUNT = 10;
+		const int STEP_COUNT = 3;
+		const float STEP_DELTA = 2.0f;
+		auto pos_list = vector<glm::vec3>(); // check for optimization
+		for (int s = 0; s < STEP_COUNT; s++) {
+			SpreaderInput p = { RING_POINT_COUNT, 10.0f, 0, s, STEP_DELTA, 1 };
+			auto prev_pos_list = pos_list;
+			pos_list = positionRadialSpreader(p, scaleVariator);
+			for (auto &p : pos_list) {
+				std::cout << '[' << p.x << ',' << p.y << ',' << p.z << ']' << std::endl;
+			}
+		}
+		
 		FbxVector4 lControlPoint0(-50, 0, 50);
 		FbxVector4 lControlPoint1(50, 0, 50);
 		FbxVector4 lControlPoint2(50, 100, 50);
@@ -493,7 +510,7 @@ namespace qg {
 		FbxVector4 lNormalYNeg(0, -1, 0);
 		FbxVector4 lNormalZPos(0, 0, 1);
 		FbxVector4 lNormalZNeg(0, 0, -1);
-
+		
 		// Create control points.
 		lMesh->InitControlPoints(24);
 		FbxVector4* lControlPoints = lMesh->GetControlPoints();
@@ -607,7 +624,7 @@ namespace qg {
 		lUVDiffuseElement->GetIndexArray().SetCount(24);
 
 		// Create polygons. Assign texture and texture UV indices.
-		for (i = 0; i < 6; i++)
+		for (int i = 0; i < 6; i++)
 		{
 			// all faces of the cube have the same texture
 			lMesh->BeginPolygon(-1, -1, -1, false);
@@ -650,7 +667,7 @@ namespace qg {
 
 			return 1.0f;
 		};
-		SpreaderInput p = {500, 10.0f, 0, 1};
+		SpreaderInput p = {10, 10.0f, 0, 0, 2.0f, 1};
 		auto pos_list = positionRadialSpreader(p, scaleVariator);
 		for (auto &i : pos_list) {
 			std::cout << '[' << i.x << ',' << i.y << ',' << i.z << ']' << std::endl;
@@ -684,6 +701,7 @@ int main(int argc, const char* argv[])
 	// create a new cube with option selected
 	//args bool (lWithTexture, lWithAnimation);
 	qg::CreateCube(false, false);
+	//qg::CreateGenMesh2(false, false);
 
 	//char gszOutputFile[_MAX_PATH];           // File name to export
 	int  gWriteFileFormat = -1;             // Write file format

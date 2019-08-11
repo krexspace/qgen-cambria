@@ -6,7 +6,8 @@ using namespace std;
 #include <functional>
 
 namespace qg {
-	struct SpreaderInput { int count; float radius; int index; int direction; };
+	// constant stepper model
+	struct SpreaderInput { int count; float radius; int radial_index; int step_index; float step_delta;  int direction; };
 
 	typedef function<float(SpreaderInput)> ScaleVariatorLambda;
 
