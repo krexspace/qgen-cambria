@@ -8,7 +8,10 @@
 
 // COMMON STL HEADERS
 #include <map>
+#include <unordered_map>
 #include <vector>
+#include <set>
+#include <unordered_set>
 #include <string>
 
 // TODO check usage

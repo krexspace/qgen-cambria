@@ -1,10 +1,14 @@
-#include "gen_core.h"
-#include "ComputeLib.h"
-
 //--
 #include <iostream>
 #include <string>
 #include <chrono>
+
+#include "GenCore.h"
+#include "ComputeLib.h"
+#include "MeshStructure.h"
+
+using namespace std::chrono;
+using namespace std;
 
 namespace qg {
 	// declare global
@@ -471,6 +475,8 @@ namespace qg {
 		// return the FbxNode
 		return lNode;
 	}
+
+
 	// Create a generic mesh with builder. 
 	FbxNode* CreateGenMesh(FbxScene* pScene, char* pName)
 	{
@@ -662,6 +668,7 @@ namespace qg {
 
 
 namespace qg {
+
 	//-------------------------------  MAIN  --------------------------------------//
 	void testPositionRadialSpreader() {
 		auto scaleVariator = [](const SpreaderInput& p) {
@@ -676,16 +683,37 @@ namespace qg {
 		}
 	}
 
+	void testMeshStructure() {
+		cout << "TEST";
+
+	}
+	void testHashing() {
+		qvec2 v1 = { 1.0f, 2.0f };
+		qvec2 v1a = v1;
+		qvec2 v1b= { 2.112344f, 1.0f };
+		qvec2 v1c = { 3.112344f, 1.0f };
+		qvec3 v2 = { 1.0f, 2.0f, 3.0f };
+
+		unordered_set<qvec2> S;
+		//S.insert(v1);
+		S.insert(v1a);
+		S.insert(v1c);
+		//S.insert(v1b);
+
+		cout << std::hash<qvec2>()(v1b) << endl;
+		cout << std::hash<qvec2>()(v1a) << endl;
+		cout << std::hash<qvec3>()(v2) << endl;
+		cout << S.size() << endl;
+	}
 	void invokeTests() {
-		testPositionRadialSpreader();
+		testHashing();
 	}
 }
 
-using namespace std::chrono;
-using namespace std;
 
 int main(int argc, const char* argv[])
 {
+	/*
 	cout << "QGEN Version 0.0.5";
 	std::string outFileName = "mgen_";
 	milliseconds ms = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
@@ -713,6 +741,6 @@ int main(int argc, const char* argv[])
 	// dont forget to delete the SdkManager 
 	// and all objects created by the SDK manager
 	qg::DestroySdkObjects(qg::gSdkManager, true);
-
-	//qg::invokeTests();
+	*/
+	qg::invokeTests();
 }

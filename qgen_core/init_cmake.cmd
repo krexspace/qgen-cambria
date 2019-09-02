@@ -1,0 +1,1 @@
+PATH=%PATH%;C:\APPS\DEV2\cmake-3.15.2-win64-x64\bin

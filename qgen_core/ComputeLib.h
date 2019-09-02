@@ -6,6 +6,7 @@ using namespace std;
 #include <functional>
 
 namespace qg {
+	
 	// constant stepper model
 	struct SpreaderInput { int count; float radius; int radial_index; int step_index; float step_delta;  int direction; };
 

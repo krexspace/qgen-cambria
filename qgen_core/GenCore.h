@@ -1,26 +1,13 @@
-
+#pragma once
 // use the fbxsdk.h
 #include "BaseWrapper.h"
-
+using namespace std;
 namespace qg {
-	class QuadFace {
-		int indices[4] = { -1,-1,-1,-1 };
-		float uvs[2 * 4]; // four pairs
-	};
-	class MeshStructure {
-		vector<glm::vec3> vertPositions;
-		vector<int> quadFaces;
-
-		// Key mappping structure used for queries
-		map<int, QuadFace*[]> indexFaceMap;
-	};
-
 	// to create an instance of the SDK manager
 	bool InitializeSdkObjects(
 		FbxManager*& pSdkManager,
 		FbxScene*& pScene
 	);
-
 
 	// to destroy an instance of the SDK manager
 	void DestroySdkObjects(
@@ -96,7 +83,6 @@ namespace qg {
 	FbxNode* CreateGenMesh(FbxScene* pScene, char* pName);
 
 	//------------------TEMP TESTS---------------------//
-	//-------------------------------  MAIN  --------------------------------------//
 	void testPositionRadialSpreader();
 
 	void invokeTests();
