@@ -3,10 +3,10 @@
 namespace qg {
 
 	// ======================= MESH STRUCTURE ====================== //
-	void MeshStructure::addFace(const QuadFace& qface) {
-
+	void MeshStructure::addFace(const QuadFaceDTO& qface) {
+		//qface
 	}
-	void MeshStructure::addFaceBatch(const vector<QuadFace> faceList) {
+	void MeshStructure::addFaceBatch(const vector<QuadFaceDTO> faceList) {
 
 	}
 	void MeshStructure::MeshStructure::deleteFace(long faceIndex) {

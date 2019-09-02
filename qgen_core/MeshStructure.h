@@ -13,9 +13,10 @@ namespace qg {
 		//
 		// operator== is not used by std::set. 
 		// Elements a and b are considered equal iff !(a < b) && !(b < a)
-		// Caution: x < rxs.x && y < rhs.y doent not work. Drops items
+		// Caution: x < rxs.x && y < rhs.y doesn't not work. Drops items in sets (ordered)
 		bool operator<(const qvec2 &rhs) const {
-			return x == rhs.x?y < rhs.y:x<rhs.x;
+			// First checks x, then y in that order
+			return x != rhs.x?x<rhs.x: y < rhs.y;
 		};
 		//
 		bool operator==(const qvec2 &rhs) const {
@@ -29,7 +30,8 @@ namespace qg {
 		float z;
 
 		bool operator<(const qvec3 &rhs) const {
-			return x < rhs.x && y < rhs.y && z < rhs.z;
+			// First checks x, then y, then z in that order
+			return x != rhs.x ? x < rhs.x : (y != rhs.y ? y < rhs.y : z < rhs.z);
 		};
 		bool operator==(const qvec3 &rhs) const {
 			return x == rhs.x && y == rhs.y && z == rhs.z;
@@ -52,6 +54,12 @@ namespace qg {
 		bool operator==(const QuadFace &rhs) const {
 			return faceIndex == rhs.faceIndex;
 		};
+	};
+	struct QuadFaceDTO {
+		qvec3 verts[4]; // four vector
+		qvec2 uvs[4]; // four pairs
+		qvec3 normals[4]; // four vector
+		long faceIndex; // Can be used to capture construction order
 	};
 }
 
@@ -101,11 +109,13 @@ namespace qg {
 		vector<QuadFace*> quadFacePointers;
 		string name;
 	};
-	// Int indices range based
+
+	// Long indices range based
+	// Contains the verts and the windin
 	class MeshStructure {
-	protected:
+	public	:
 		// ordered set of unique vertices
-		set<qvec3> verts; // Ordered Unique Vert List
+		vector<qvec3> verts; // Ordered Unique Vert List - ordered by x,y,z in that order
 		set<QuadFace> quadFaces; // Ordered Unique Face List - ordered by faceIndex
 
 		// Named groups store
@@ -117,10 +127,11 @@ namespace qg {
 		unordered_map<long, vector<QuadFace*>> indexFacePointerMap;
 		unordered_map<long, vector<string>> indexVertGroupNameinterMap;
 		unordered_map<long, vector<string>> indexFaceGroupNameMap; // Check if required and correct
-	public:
-		void addFace(const QuadFace& qface);
-		void addFaceBatch(const vector<QuadFace> faceList);
+		
+		// Class Methods
+		void addFace(const QuadFaceDTO& qface);
+		void addFaceBatch(const vector<QuadFaceDTO> faceList);
 		void deleteFace(long faceIndex);
 	};
 }
-	// end MESH DATA //
+// end MESH DATA //

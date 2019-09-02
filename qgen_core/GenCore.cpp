@@ -310,6 +310,10 @@ namespace qg {
 		gScene->GetRootNode()->AddChild(lCube);
 	}
 
+
+	FbxNode* MeshStructureToFBX_Transfromer(FbxScene* pScene, char* pName) {
+
+	}
 	// http://download.autodesk.com/us/fbx/20112/FBX_SDK_HELP/index.html?url=WS73099cc142f487551fea285e1221e4f9ff8-7f56.htm,topicNumber=d0e4642
 	// Create a cube mesh. 
 	FbxNode* CreateCubeMesh(FbxScene* pScene, char* pName)

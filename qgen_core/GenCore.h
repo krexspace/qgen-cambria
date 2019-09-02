@@ -82,6 +82,8 @@ namespace qg {
 
 	FbxNode* CreateGenMesh(FbxScene* pScene, char* pName);
 
+	FbxNode* MeshStructureToFBX_Transfromer(FbxScene* pScene, char* pName);
+
 	//------------------TEMP TESTS---------------------//
 	void testPositionRadialSpreader();
 
