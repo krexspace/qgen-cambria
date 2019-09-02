@@ -692,17 +692,23 @@ namespace qg {
 		qvec2 v1a = v1;
 		qvec2 v1b= { 2.112344f, 1.0f };
 		qvec2 v1c = { 3.112344f, 1.0f };
-		qvec3 v2 = { 1.0f, 2.0f, 3.0f };
+		qvec2 v2 = { 1.0f, 3.0f };
+		qvec2 v2a = { 2.0f, 3.0f };
+		qvec2 v2b = { 2.0f, 4.0f };
 
-		unordered_set<qvec2> S;
-		//S.insert(v1);
+		//qvec3 q2 = { 1.0f, 2.0f, 3.0f };
+
+		set<qvec2> S;
+		S.insert(v1);
 		S.insert(v1a);
 		S.insert(v1c);
-		//S.insert(v1b);
+		S.insert(v2);
+		S.insert(v2a);
+		S.insert(v2b);
 
 		cout << std::hash<qvec2>()(v1b) << endl;
 		cout << std::hash<qvec2>()(v1a) << endl;
-		cout << std::hash<qvec3>()(v2) << endl;
+		//cout << std::hash<qvec3>()(v2) << endl;
 		cout << S.size() << endl;
 	}
 	void invokeTests() {

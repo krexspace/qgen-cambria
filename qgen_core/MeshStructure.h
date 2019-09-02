@@ -10,12 +10,14 @@ namespace qg {
 	struct qvec2 {
 		float x;
 		float y;
-		/*
-		// Doesnt make sense here
+		//
+		// operator== is not used by std::set. 
+		// Elements a and b are considered equal iff !(a < b) && !(b < a)
+		// Caution: x < rxs.x && y < rhs.y doent not work. Drops items
 		bool operator<(const qvec2 &rhs) const {
-			return x < rhs.x && y < rhs.y;
+			return x == rhs.x?y < rhs.y:x<rhs.x;
 		};
-		*/
+		//
 		bool operator==(const qvec2 &rhs) const {
 			return x == rhs.x && y == rhs.y;
 		};
@@ -31,6 +33,24 @@ namespace qg {
 		};
 		bool operator==(const qvec3 &rhs) const {
 			return x == rhs.x && y == rhs.y && z == rhs.z;
+		};
+	};
+	class QuadFace {
+	public:
+		long indices[4] = { -1,-1,-1,-1 };
+		qvec2 uvs[4]; // four pairs
+		qvec3 normals[4]; // four vector
+		long faceIndex; // Can be used to capture construction order
+		// Other possible
+		// markers
+		// vetex_colors
+		// group_info
+
+		bool operator<(const QuadFace &rhs) const {
+			return faceIndex < rhs.faceIndex;
+		};
+		bool operator==(const QuadFace &rhs) const {
+			return faceIndex == rhs.faceIndex;
 		};
 	};
 }
@@ -57,6 +77,15 @@ namespace std {
 			return h;
 		}
 	};
+	template<> struct hash<qg::QuadFace> {
+	public:
+		size_t operator()(const qg::QuadFace &s) const
+		{
+			std::size_t h = 0;
+			qg::hash_combine(h, s.faceIndex);
+			return h;
+		}
+	};
 }
 
 namespace qg {
@@ -67,16 +96,7 @@ namespace qg {
 		string name;
 		VertGroupType type = VertGroupType::GROUP;
 	};
-	class QuadFace {
-	public:
-		long indices[4] = { -1,-1,-1,-1 };
-		qvec2 uvs[4]; // four pairs
-		qvec3 normals[4]; // four vector
-		// Other possible
-		// markers
-		// vetex_colors
-		// group_info
-	};
+	
 	class FaceGroup {
 		vector<QuadFace*> quadFacePointers;
 		string name;
@@ -84,10 +104,11 @@ namespace qg {
 	// Int indices range based
 	class MeshStructure {
 	protected:
-		vector<qvec3> verts; // Vert List
-		vector<QuadFace> quadFaces; // Face List
+		// ordered set of unique vertices
+		set<qvec3> verts; // Ordered Unique Vert List
+		set<QuadFace> quadFaces; // Ordered Unique Face List - ordered by faceIndex
 
-		// Vert groups store
+		// Named groups store
 		unordered_map<string, VertGroup> vertGroupMap;
 		unordered_map<string, FaceGroup> faceGroupMap;
 
