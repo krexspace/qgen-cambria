@@ -6,6 +6,8 @@
 #include "GenCore.h"
 #include "ComputeLib.h"
 #include "MeshStructure.h"
+#include "MeshBuilder.h"
+#include "FBXTransformer.h"
 
 using namespace std::chrono;
 using namespace std;
@@ -289,7 +291,7 @@ namespace qg {
 		bool pAnimate
 	)
 	{
-		FbxNode* lCube = CreateGenMesh(gScene, pCubeName);
+		FbxNode* lCube = CreateQgenDemoMesh(gScene, pCubeName);
 
 		// set the cube position
 		lCube->LclTranslation.Set(FbxVector4(pX, pY, pZ));
@@ -311,9 +313,14 @@ namespace qg {
 	}
 
 
-	FbxNode* MeshStructureToFBX_Transfromer(FbxScene* pScene, char* pName) {
+	FbxNode* CreateQgenDemoMesh(FbxScene* pScene, char* pName) {
 
+		MeshStructure* meshStructure = buildDemoMesh();
+		FbxNode* node = fbxTransform(*meshStructure, pScene, pName);
+		delete meshStructure;
+		return node;
 	}
+
 	// http://download.autodesk.com/us/fbx/20112/FBX_SDK_HELP/index.html?url=WS73099cc142f487551fea285e1221e4f9ff8-7f56.htm,topicNumber=d0e4642
 	// Create a cube mesh. 
 	FbxNode* CreateCubeMesh(FbxScene* pScene, char* pName)
@@ -688,8 +695,8 @@ namespace qg {
 	}
 
 	void testMeshStructure() {
-		cout << "TEST";
-
+		cout << "TEST MESH STRUCTURE" << endl;
+		qg::buildDemoMesh();
 	}
 	void testHashing() {
 		qvec2 v1 = { 1.0f, 2.0f };
@@ -716,14 +723,14 @@ namespace qg {
 		cout << S.size() << endl;
 	}
 	void invokeTests() {
-		testHashing();
+		testMeshStructure();
 	}
 }
 
 
 int main(int argc, const char* argv[])
 {
-	/*
+	
 	cout << "QGEN Version 0.0.5";
 	std::string outFileName = "mgen_";
 	milliseconds ms = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
@@ -751,6 +758,6 @@ int main(int argc, const char* argv[])
 	// dont forget to delete the SdkManager 
 	// and all objects created by the SDK manager
 	qg::DestroySdkObjects(qg::gSdkManager, true);
-	*/
-	qg::invokeTests();
+	
+	//qg::invokeTests();
 }

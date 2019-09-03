@@ -5,8 +5,12 @@
 #include <stdarg.h>
 #include <assert.h>
 #include <limits>
+#include <iostream>
+#include <string>
+#include <chrono>
 
 // COMMON STL HEADERS
+#include <array>
 #include <map>
 #include <unordered_map>
 #include <vector>

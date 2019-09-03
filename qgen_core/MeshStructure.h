@@ -39,9 +39,10 @@ namespace qg {
 	};
 	class QuadFace {
 	public:
-		long indices[4] = { -1,-1,-1,-1 };
-		qvec2 uvs[4]; // four pairs
-		qvec3 normals[4]; // four vector
+		// std::array used instead of c style arrays
+		array<long, 4> indices;
+		array<qvec2, 4> uvs; // four pairs
+		array<qvec3, 4> normals; // four vector
 		long faceIndex; // Can be used to capture construction order
 		// Other possible
 		// markers
@@ -116,7 +117,7 @@ namespace qg {
 	public	:
 		// ordered set of unique vertices
 		vector<qvec3> verts; // Ordered Unique Vert List - ordered by x,y,z in that order
-		set<QuadFace> quadFaces; // Ordered Unique Face List - ordered by faceIndex
+		vector<QuadFace> quadFaces; // Ordered Unique Face List - ordered by faceIndex
 
 		// Named groups store
 		unordered_map<string, VertGroup> vertGroupMap;
@@ -125,7 +126,7 @@ namespace qg {
 		// Key mappping structure used for queries
 		// Use this for reverse lookup of index by vert pointer
 		unordered_map<long, vector<QuadFace*>> indexFacePointerMap;
-		unordered_map<long, vector<string>> indexVertGroupNameinterMap;
+		unordered_map<long, vector<string>> indexVertGroupNameMap;
 		unordered_map<long, vector<string>> indexFaceGroupNameMap; // Check if required and correct
 		
 		// Class Methods

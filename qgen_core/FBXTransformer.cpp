@@ -1,8 +1,15 @@
 #include "FBXTransformer.h"
-#include "MeshStructure.h"
 
 namespace qg {
-	FbxNode* fbxTransform(MeshStructure& ms, FbxScene* pScene, char* pName) {
+	FbxVector4 toFbxVector4(const qvec3& v) {
+		return FbxVector4(v.x, v.y, v.z);
+	}
+
+	FbxVector2 toFbxVector2(const qvec2& v) {
+		return FbxVector2(v.x, v.y);
+	}
+
+	FbxNode* fbxTransform(const MeshStructure& ms, FbxScene* pScene, char* pName) {
 		FbxMesh* lMesh = FbxMesh::Create(pScene, pName);
 
 		long numFaces = ms.quadFaces.size();
@@ -23,9 +30,8 @@ namespace qg {
 
 		auto& nVec = lGeometryElementNormal->GetDirectArray();
 
-
 		// MAP UVS
-			// Create UV for Diffuse channel.
+		// Create UV for Diffuse channel.
 		FbxGeometryElementUV* lUVDiffuseElement = lMesh->CreateElementUV("DiffuseUV");
 		FBX_ASSERT(lUVDiffuseElement != NULL);
 		lUVDiffuseElement->SetMappingMode(FbxGeometryElement::eByControlPoint);
@@ -35,15 +41,15 @@ namespace qg {
 		long i = 0;
 		for (auto qf: ms.quadFaces) {
 			auto indices = qf.indices;
-			qvec3 vert1 = ms.verts[indices[0]];
-			qvec3 vert2 = ms.verts[indices[1]];
-			qvec3 vert3 = ms.verts[indices[2]];
-			qvec3 vert4 = ms.verts[indices[3]];
+			auto vert1 = ms.verts[indices[0]];
+			auto vert2 = ms.verts[indices[1]];
+			auto vert3 = ms.verts[indices[2]];
+			auto vert4 = ms.verts[indices[3]];
 			
-			FbxVector4 v1 = toFbxVector4(vert1);
-			FbxVector4 v2 = toFbxVector4(vert2);
-			FbxVector4 v3 = toFbxVector4(vert3);
-			FbxVector4 v4 = toFbxVector4(vert4);
+			auto v1 = toFbxVector4(vert1);
+			auto v2 = toFbxVector4(vert2);
+			auto v3 = toFbxVector4(vert3);
+			auto v4 = toFbxVector4(vert4);
 
 			lControlPoints[i++] = v1;
 			lControlPoints[i++] = v2;
@@ -68,5 +74,22 @@ namespace qg {
 			uvVec.Add(uv3);
 			uvVec.Add(uv4);
 		}
+		//return lMesh;
+		
+		// create a FbxNode
+		FbxNode* lNode = FbxNode::Create(pScene, pName);
+
+		// set the node attribute
+		lNode->SetNodeAttribute(lMesh);
+
+		// set the shading mode to view texture
+		lNode->SetShadingMode(FbxNode::eTextureShading);
+
+		// rescale the cube
+		lNode->LclScaling.Set(FbxVector4(0.3, 0.3, 0.3));
+
+		// return the FbxNode
+		return lNode;
+		
 	}
 }
