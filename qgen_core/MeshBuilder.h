@@ -3,4 +3,5 @@
 
 namespace qg {
 	MeshStructure* buildDemoMesh();
+	MeshStructure* buildDemoMesh_Cube();
 }

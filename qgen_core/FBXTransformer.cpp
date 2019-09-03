@@ -40,6 +40,7 @@ namespace qg {
 
 		long i = 0;
 		for (auto qf: ms.quadFaces) {
+			cout << i << endl;
 			auto indices = qf.indices;
 			auto vert1 = ms.verts[indices[0]];
 			auto vert2 = ms.verts[indices[1]];
@@ -73,6 +74,9 @@ namespace qg {
 			uvVec.Add(uv2);
 			uvVec.Add(uv3);
 			uvVec.Add(uv4);
+		}
+		for (int i = 0; i < 24; i++) {
+			cout << lControlPoints[i].mData[0] << ',' << lControlPoints[i].mData[1] << ',' << lControlPoints[i].mData[2] << endl;
 		}
 		//return lMesh;
 		
