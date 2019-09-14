@@ -317,7 +317,7 @@ namespace qg {
 
 	FbxNode* CreateQgenDemoMesh(FbxScene* pScene, char* pName) {
 
-		MeshStructure* meshStructure = buildDemoMesh_Cube();
+		MeshStructure* meshStructure = buildDemoMesh();
 		FbxNode* node = fbxTransform(*meshStructure, pScene, pName);
 		delete meshStructure;
 		return node;

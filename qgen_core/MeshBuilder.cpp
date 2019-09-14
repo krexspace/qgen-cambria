@@ -38,7 +38,7 @@ namespace qg {
 
 		QuadFace qf;
 		// Face 1
-		qf.indices = { 0, 1, 3, 2 };
+		qf.indices = { 0, 2, 1, 3 };
 		// same as { qvec2{0.0f, 1.0f} , qvec2{1.0f, 1.0f} , qvec2{2.0f, 1.0f} , qvec2{3.0f, 1.0f} };
 		qf.uvs = {
 			0.0f, 0.0f, 
