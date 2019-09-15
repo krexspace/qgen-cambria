@@ -46,31 +46,20 @@ namespace qg {
 
 		int i = 0;
 		for (auto qf: ms.quadFaces) {
-
 			cout << "FACE " << i/4 << endl;
-			//auto indices = qf.indices;
+			// Add normals
+			nVec.Add(toFbxVector4(qf.normals[0]));
+			nVec.Add(toFbxVector4(qf.normals[1]));
+			nVec.Add(toFbxVector4(qf.normals[2]));
+			nVec.Add(toFbxVector4(qf.normals[3]));
+			// Add UVs
+			uvVec.Add(toFbxVector2(qf.uvs[0]));
+			uvVec.Add(toFbxVector2(qf.uvs[1]));
+			uvVec.Add(toFbxVector2(qf.uvs[2]));
+			uvVec.Add(toFbxVector2(qf.uvs[3]));
 
-			auto norm1 = toFbxVector4(qf.normals[0]);
-			auto norm2 = toFbxVector4(qf.normals[1]);
-			auto norm3 = toFbxVector4(qf.normals[2]);
-			auto norm4 = toFbxVector4(qf.normals[3]);
-			nVec.Add(norm1);
-			nVec.Add(norm2);
-			nVec.Add(norm3);
-			nVec.Add(norm4);
-
-			auto uv1 = toFbxVector2(qf.uvs[0]);
-			auto uv2 = toFbxVector2(qf.uvs[1]);
-			auto uv3 = toFbxVector2(qf.uvs[2]);
-			auto uv4 = toFbxVector2(qf.uvs[3]);
-
-			uvVec.Add(uv1);
-			uvVec.Add(uv2);
-			uvVec.Add(uv3);
-			uvVec.Add(uv4);
-
+			// Build the faces of the mesh
 			lMesh->BeginPolygon(-1, -1, -1, false);
-
 			for (long iFaceIndex : qf.indices) {
 				// Control point index
 				lMesh->AddPolygon(iFaceIndex);
@@ -81,7 +70,7 @@ namespace qg {
 			lMesh->EndPolygon();
 		}
 
-		for (int n = 0; n < numVerts; n++) {
+		for (int n = 0; n < ms.verts.size(); n++) {
 			cout << "VERTS " << lControlPoints[n].mData[0] << ',' << lControlPoints[n].mData[1] << ',' << lControlPoints[n].mData[2] << endl;
 		}
 		//return lMesh;
