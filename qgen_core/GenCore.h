@@ -65,9 +65,9 @@ namespace qg {
 	const char * GetRootNodeName();
 
 	// create a new cube under the root node
-	void CreateCube(bool pWithTexture, bool pAnimate);
+	void CreateGenMesh(bool pWithTexture, bool pAnimate);
 
-	void CreateCubeDetailed(
+	void CreateGenMeshDetailed(
 		char* pCubeName,
 		double pX,
 		double pY,
@@ -76,11 +76,6 @@ namespace qg {
 		bool pWithTexture,
 		bool pAnim
 	);
-
-	// Create a cube mesh
-	FbxNode* CreateCubeMesh(FbxScene* pScene, char* pName);
-
-	FbxNode* CreateGenMesh(FbxScene* pScene, char* pName);
 
 	FbxNode* CreateQgenDemoMesh(FbxScene* pScene, char* pName);
 
