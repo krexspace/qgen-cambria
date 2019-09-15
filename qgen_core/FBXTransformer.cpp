@@ -41,9 +41,8 @@ namespace qg {
 		long i = 0;
 		
 		for (auto qf: ms.quadFaces) {
-			lMesh->BeginPolygon(-1, -1, -1, false);
-
-			cout << i << endl;
+			
+			cout << "FACE " << i << endl;
 			auto indices = qf.indices;
 			auto vert1 = ms.verts[indices[0]];
 			auto vert2 = ms.verts[indices[1]];
@@ -79,9 +78,17 @@ namespace qg {
 			uvVec.Add(uv3);
 			uvVec.Add(uv4);
 
-			for (long iFaceIndex : qf.indices) {
+
+			lMesh->BeginPolygon(-1, -1, -1, false);
+
+			//for (long iFaceIndex : qf.indices) {
+			//	// Control point index
+			//	lMesh->AddPolygon(iFaceIndex);
+			//}
+
+			for (int j = 0; j < 4; j++) {
 				// Control point index
-				lMesh->AddPolygon(iFaceIndex);
+				lMesh->AddPolygon(i-4 + j);
 			}
 		
 			lMesh->EndPolygon();
@@ -143,6 +150,7 @@ namespace qg {
 		//nVec.Add(lNormalYNeg);
 		//nVec.Add(lNormalYNeg);
 		//nVec.Add(lNormalYNeg);
+
 		//nVec.Add(lNormalYNeg);
 
 		//// Array of polygon vertices.
@@ -196,8 +204,8 @@ namespace qg {
 		//	lMesh->EndPolygon();
 		//}
 		//===========================================
-		for (int i = 0; i < 24; i++) {
-			cout << lControlPoints[i].mData[0] << ',' << lControlPoints[i].mData[1] << ',' << lControlPoints[i].mData[2] << endl;
+		for (int n = 0; n < 24; n++) {
+			cout << "VERTS " << lControlPoints[n].mData[0] << ',' << lControlPoints[n].mData[1] << ',' << lControlPoints[n].mData[2] << endl;
 		}
 		//return lMesh;
 		
