@@ -168,49 +168,49 @@ namespace qg {
 		qfList.push_back(qf);
 
 		// Face 4
-		qf.indices = { 4, 0, 3, 7 };
-		// same as { qvec2{0.0f, 1.0f} , qvec2{1.0f, 1.0f} , qvec2{2.0f, 1.0f} , qvec2{3.0f, 1.0f} };
-		qf.uvs = {
-			0.0f, 0.0f,
-			1.0f, 0.0f,
-			1.0f, 1.0f,
-			0.0f, 1.0f };
-		qf.normals = {
-			-1.0f, 0.0f, 0.0f,
-			-1.0f, 0.0f, 0.0f,
-			-1.0f, 0.0f, 0.0f,
-			-1.0f, 0.0f, 0.0f };
-		qfList.push_back(qf);
+		//qf.indices = { 4, 0, 3, 7 };
+		//// same as { qvec2{0.0f, 1.0f} , qvec2{1.0f, 1.0f} , qvec2{2.0f, 1.0f} , qvec2{3.0f, 1.0f} };
+		//qf.uvs = {
+		//	0.0f, 0.0f,
+		//	1.0f, 0.0f,
+		//	1.0f, 1.0f,
+		//	0.0f, 1.0f };
+		//qf.normals = {
+		//	-1.0f, 0.0f, 0.0f,
+		//	-1.0f, 0.0f, 0.0f,
+		//	-1.0f, 0.0f, 0.0f,
+		//	-1.0f, 0.0f, 0.0f };
+		//qfList.push_back(qf);
 
-		// Face 5
-		qf.indices = { 3, 2, 6, 7 };
-		// same as { qvec2{0.0f, 1.0f} , qvec2{1.0f, 1.0f} , qvec2{2.0f, 1.0f} , qvec2{3.0f, 1.0f} };
-		qf.uvs = {
-			0.0f, 0.0f,
-			1.0f, 0.0f,
-			1.0f, 1.0f,
-			0.0f, 1.0f };
-		qf.normals = {
-			0.0f, 1.0f, 0.0f,
-			0.0f, 1.0f, 0.0f,
-			0.0f, 1.0f, 0.0f,
-			0.0f, 1.0f, 0.0f };
-		qfList.push_back(qf);
+		//// Face 5
+		//qf.indices = { 3, 2, 6, 7 };
+		//// same as { qvec2{0.0f, 1.0f} , qvec2{1.0f, 1.0f} , qvec2{2.0f, 1.0f} , qvec2{3.0f, 1.0f} };
+		//qf.uvs = {
+		//	0.0f, 0.0f,
+		//	1.0f, 0.0f,
+		//	1.0f, 1.0f,
+		//	0.0f, 1.0f };
+		//qf.normals = {
+		//	0.0f, 1.0f, 0.0f,
+		//	0.0f, 1.0f, 0.0f,
+		//	0.0f, 1.0f, 0.0f,
+		//	0.0f, 1.0f, 0.0f };
+		//qfList.push_back(qf);
 
-		// Face 6
-		qf.indices = { 1, 0, 4, 5 };
-		// same as { qvec2{0.0f, 1.0f} , qvec2{1.0f, 1.0f} , qvec2{2.0f, 1.0f} , qvec2{3.0f, 1.0f} };
-		qf.uvs = {
-			0.0f, 0.0f,
-			1.0f, 0.0f,
-			1.0f, 1.0f,
-			0.0f, 1.0f };
-		qf.normals = {
-			0.0f, -1.0f, 0.0f,
-			0.0f, -1.0f, 0.0f,
-			0.0f, -1.0f, 0.0f,
-			0.0f, -1.0f, 0.0f };
-		qfList.push_back(qf);
+		//// Face 6
+		//qf.indices = { 1, 0, 4, 5 };
+		//// same as { qvec2{0.0f, 1.0f} , qvec2{1.0f, 1.0f} , qvec2{2.0f, 1.0f} , qvec2{3.0f, 1.0f} };
+		//qf.uvs = {
+		//	0.0f, 0.0f,
+		//	1.0f, 0.0f,
+		//	1.0f, 1.0f,
+		//	0.0f, 1.0f };
+		//qf.normals = {
+		//	0.0f, -1.0f, 0.0f,
+		//	0.0f, -1.0f, 0.0f,
+		//	0.0f, -1.0f, 0.0f,
+		//	0.0f, -1.0f, 0.0f };
+		//qfList.push_back(qf);
 		
 		ms->verts = vc; //copy
 		ms->quadFaces = qfList; //copy
@@ -271,7 +271,7 @@ namespace qg {
 		qfList.push_back(qf);
 
 		// Face 2
-		qf.indices = { 4, 5, 6, 7 };
+		qf.indices = { 1, 5, 6, 2 };
 		// same as { qvec2{0.0f, 1.0f} , qvec2{1.0f, 1.0f} , qvec2{2.0f, 1.0f} , qvec2{3.0f, 1.0f} };
 		qf.uvs = {
 			0.0f, 0.0f,
@@ -286,7 +286,7 @@ namespace qg {
 		qfList.push_back(qf);
 
 		// Face 3
-		qf.indices = { 8, 9,10, 11 };
+		qf.indices = { 5, 4, 7, 6 };
 		// same as { qvec2{0.0f, 1.0f} , qvec2{1.0f, 1.0f} , qvec2{2.0f, 1.0f} , qvec2{3.0f, 1.0f} };
 		qf.uvs = {
 			0.0f, 0.0f,
@@ -301,7 +301,7 @@ namespace qg {
 		qfList.push_back(qf);
 
 		// Face 4
-		qf.indices = { 12, 13, 14, 15 };
+		qf.indices = { 4, 0, 3, 7 };
 		// same as { qvec2{0.0f, 1.0f} , qvec2{1.0f, 1.0f} , qvec2{2.0f, 1.0f} , qvec2{3.0f, 1.0f} };
 		qf.uvs = {
 			0.0f, 0.0f,
@@ -316,7 +316,7 @@ namespace qg {
 		qfList.push_back(qf);
 
 		// Face 5
-		qf.indices = {16, 17, 18, 19 };
+		qf.indices = { 3, 2, 6, 7 };
 		// same as { qvec2{0.0f, 1.0f} , qvec2{1.0f, 1.0f} , qvec2{2.0f, 1.0f} , qvec2{3.0f, 1.0f} };
 		qf.uvs = {
 			0.0f, 0.0f,
@@ -331,7 +331,7 @@ namespace qg {
 		qfList.push_back(qf);
 
 		// Face 6
-		qf.indices = { 20, 21, 22, 23 };
+		qf.indices = { 1, 0, 4, 5 };
 		// same as { qvec2{0.0f, 1.0f} , qvec2{1.0f, 1.0f} , qvec2{2.0f, 1.0f} , qvec2{3.0f, 1.0f} };
 		qf.uvs = {
 			0.0f, 0.0f,

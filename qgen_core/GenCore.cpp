@@ -742,7 +742,8 @@ int main(int argc, const char* argv[])
 	}
 	else {
 		cout << "No args: Using default file name: ";
-		outFileName += to_string(ms.count()) + ".fbx";
+		/*outFileName += to_string(ms.count()) + ".fbx";*/
+		outFileName += "mesh.fbx";
 	}
 	cout << outFileName << endl;
 
