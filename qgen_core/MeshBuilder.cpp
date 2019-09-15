@@ -168,49 +168,49 @@ namespace qg {
 		qfList.push_back(qf);
 
 		// Face 4
-		//qf.indices = { 4, 0, 3, 7 };
-		//// same as { qvec2{0.0f, 1.0f} , qvec2{1.0f, 1.0f} , qvec2{2.0f, 1.0f} , qvec2{3.0f, 1.0f} };
-		//qf.uvs = {
-		//	0.0f, 0.0f,
-		//	1.0f, 0.0f,
-		//	1.0f, 1.0f,
-		//	0.0f, 1.0f };
-		//qf.normals = {
-		//	-1.0f, 0.0f, 0.0f,
-		//	-1.0f, 0.0f, 0.0f,
-		//	-1.0f, 0.0f, 0.0f,
-		//	-1.0f, 0.0f, 0.0f };
-		//qfList.push_back(qf);
+		qf.indices = { 4, 0, 3, 7 };
+		// same as { qvec2{0.0f, 1.0f} , qvec2{1.0f, 1.0f} , qvec2{2.0f, 1.0f} , qvec2{3.0f, 1.0f} };
+		qf.uvs = {
+			0.0f, 0.0f,
+			1.0f, 0.0f,
+			1.0f, 1.0f,
+			0.0f, 1.0f };
+		qf.normals = {
+			-1.0f, 0.0f, 0.0f,
+			-1.0f, 0.0f, 0.0f,
+			-1.0f, 0.0f, 0.0f,
+			-1.0f, 0.0f, 0.0f };
+		qfList.push_back(qf);
 
-		//// Face 5
-		//qf.indices = { 3, 2, 6, 7 };
-		//// same as { qvec2{0.0f, 1.0f} , qvec2{1.0f, 1.0f} , qvec2{2.0f, 1.0f} , qvec2{3.0f, 1.0f} };
-		//qf.uvs = {
-		//	0.0f, 0.0f,
-		//	1.0f, 0.0f,
-		//	1.0f, 1.0f,
-		//	0.0f, 1.0f };
-		//qf.normals = {
-		//	0.0f, 1.0f, 0.0f,
-		//	0.0f, 1.0f, 0.0f,
-		//	0.0f, 1.0f, 0.0f,
-		//	0.0f, 1.0f, 0.0f };
-		//qfList.push_back(qf);
+		// Face 5
+		qf.indices = { 3, 2, 6, 7 };
+		// same as { qvec2{0.0f, 1.0f} , qvec2{1.0f, 1.0f} , qvec2{2.0f, 1.0f} , qvec2{3.0f, 1.0f} };
+		qf.uvs = {
+			0.0f, 0.0f,
+			1.0f, 0.0f,
+			1.0f, 1.0f,
+			0.0f, 1.0f };
+		qf.normals = {
+			0.0f, 1.0f, 0.0f,
+			0.0f, 1.0f, 0.0f,
+			0.0f, 1.0f, 0.0f,
+			0.0f, 1.0f, 0.0f };
+		qfList.push_back(qf);
 
-		//// Face 6
-		//qf.indices = { 1, 0, 4, 5 };
-		//// same as { qvec2{0.0f, 1.0f} , qvec2{1.0f, 1.0f} , qvec2{2.0f, 1.0f} , qvec2{3.0f, 1.0f} };
-		//qf.uvs = {
-		//	0.0f, 0.0f,
-		//	1.0f, 0.0f,
-		//	1.0f, 1.0f,
-		//	0.0f, 1.0f };
-		//qf.normals = {
-		//	0.0f, -1.0f, 0.0f,
-		//	0.0f, -1.0f, 0.0f,
-		//	0.0f, -1.0f, 0.0f,
-		//	0.0f, -1.0f, 0.0f };
-		//qfList.push_back(qf);
+		// Face 6
+		qf.indices = { 1, 0, 4, 5 };
+		// same as { qvec2{0.0f, 1.0f} , qvec2{1.0f, 1.0f} , qvec2{2.0f, 1.0f} , qvec2{3.0f, 1.0f} };
+		qf.uvs = {
+			0.0f, 0.0f,
+			1.0f, 0.0f,
+			1.0f, 1.0f,
+			0.0f, 1.0f };
+		qf.normals = {
+			0.0f, -1.0f, 0.0f,
+			0.0f, -1.0f, 0.0f,
+			0.0f, -1.0f, 0.0f,
+			0.0f, -1.0f, 0.0f };
+		qfList.push_back(qf);
 		
 		ms->verts = vc; //copy
 		ms->quadFaces = qfList; //copy

@@ -38,27 +38,20 @@ namespace qg {
 		lUVDiffuseElement->SetReferenceMode(FbxGeometryElement::eDirect);
 		auto& uvVec = lUVDiffuseElement->GetDirectArray();
 
-		long i = 0;
-		
+		int i = 0;
+
+		assert(ms.verts.size() <= numVerts);
+
+		for (auto vert : ms.verts) {
+			lControlPoints[i++] = toFbxVector4(vert);
+		}
+
+		i = 0;
 		for (auto qf: ms.quadFaces) {
 			
 			cout << "FACE " << i << endl;
-			auto indices = qf.indices;
-			auto vert1 = ms.verts[indices[0]];
-			auto vert2 = ms.verts[indices[1]];
-			auto vert3 = ms.verts[indices[2]];
-			auto vert4 = ms.verts[indices[3]];
+			//auto indices = qf.indices;
 			
-			auto v1 = toFbxVector4(vert1);
-			auto v2 = toFbxVector4(vert2);
-			auto v3 = toFbxVector4(vert3);
-			auto v4 = toFbxVector4(vert4);
-
-			lControlPoints[i++] = v1;
-			lControlPoints[i++] = v2;
-			lControlPoints[i++] = v3;
-			lControlPoints[i++] = v4;
-
 			auto norm1 = toFbxVector4(qf.normals[0]);
 			auto norm2 = toFbxVector4(qf.normals[1]);
 			auto norm3 = toFbxVector4(qf.normals[2]);
@@ -74,6 +67,7 @@ namespace qg {
 			auto uv4 = toFbxVector2(qf.uvs[3]);
 			
 			uvVec.Add(uv1);
+
 			uvVec.Add(uv2);
 			uvVec.Add(uv3);
 			uvVec.Add(uv4);
@@ -81,16 +75,16 @@ namespace qg {
 
 			lMesh->BeginPolygon(-1, -1, -1, false);
 
-			//for (long iFaceIndex : qf.indices) {
-			//	// Control point index
-			//	lMesh->AddPolygon(iFaceIndex);
-			//}
-
-			for (int j = 0; j < 4; j++) {
+			for (long iFaceIndex : qf.indices) {
 				// Control point index
-				lMesh->AddPolygon(i-4 + j);
+				lMesh->AddPolygon(iFaceIndex);
 			}
-		
+
+			//for (int j = 0; j < 4; j++) {
+			//	// Control point index
+			//	lMesh->AddPolygon(i + j);
+			//}
+			//i += 4;
 			lMesh->EndPolygon();
 		}
 		//========================TEMP===============
@@ -204,7 +198,7 @@ namespace qg {
 		//	lMesh->EndPolygon();
 		//}
 		//===========================================
-		for (int n = 0; n < 24; n++) {
+		for (int n = 0; n < numVerts; n++) {
 			cout << "VERTS " << lControlPoints[n].mData[0] << ',' << lControlPoints[n].mData[1] << ',' << lControlPoints[n].mData[2] << endl;
 		}
 		//return lMesh;
