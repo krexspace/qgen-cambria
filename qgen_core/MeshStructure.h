@@ -119,6 +119,7 @@ namespace qg {
 		vector<qvec3> verts; // Ordered Unique Vert List - ordered by x,y,z in that order
 		vector<QuadFace> quadFaces; // Ordered Unique Face List - ordered by faceIndex
 
+		/*
 		// Named groups store
 		unordered_map<string, VertGroup> vertGroupMap;
 		unordered_map<string, FaceGroup> faceGroupMap;
@@ -133,6 +134,8 @@ namespace qg {
 		void addFace(const QuadFaceDTO& qface);
 		void addFaceBatch(const vector<QuadFaceDTO> faceList);
 		void deleteFace(long faceIndex);
+		*/
+		void dropVerts(vector<int> indices);
 	};
 }
 // end MESH DATA //
