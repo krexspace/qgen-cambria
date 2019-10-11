@@ -148,6 +148,8 @@ namespace qg {
 		vector<QuadFace> quadFaces; // Ordered Unique Face List - ordered by faceIndex
 
 		map<qvec3, int> vert_index_reverse_map;
+		// CRITICAL MAP FOR PERFORMANCE and SCALING 
+		// Enabkes reverse lookup of face objects by index
 		map<int, vector<int>> indexFaceIndexList_map;
 
 		void rebuild_vert_index_reverse_map();
