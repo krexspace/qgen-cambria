@@ -13,7 +13,7 @@ namespace qg {
 	//void MeshStructure::MeshStructure::deleteFace(long faceIndex) {
 
 	//}
-
+	// Atomic operation
 	void MeshStructure::dropVerts(vector<int> indices) {
 		std::set<int> index_set(indices.begin(), indices.end());
 		
@@ -52,6 +52,24 @@ namespace qg {
 				}
 			}
 			++qf_index;
+		}
+	}
+#define DUPLICATE_VERT_CHECK true
+	void MeshStructure::rebuild_vert_index_reverse_map() {
+		vert_index_reverse_map.clear(); // Erase all
+		int vert_index = 0;
+		for (auto v : verts) {
+			// If vertex is already there, something is wrong with the data,
+			// or vertex is a duplicate
+			// TODO: Check if needed or made optional
+			if (DUPLICATE_VERT_CHECK && vert_index_reverse_map.count(v)) {
+				throw std::runtime_error("Duplicate vertex found at index " + vert_index);
+			}
+			else {
+				// Beautiful logic! Key is a vert object
+				vert_index_reverse_map[v] = vert_index;
+			}
+			++vert_index;
 		}
 	}
 	// ====================== end MESH STRUCTURE =================== //

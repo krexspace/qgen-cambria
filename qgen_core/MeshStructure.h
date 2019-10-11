@@ -23,18 +23,32 @@ namespace qg {
 			return x == rhs.x && y == rhs.y;
 		};
 	};
-
+#define VERT_PRECISION 1000
 	struct qvec3 {
 		float x;
 		float y;
 		float z;
 
 		bool operator<(const qvec3 &rhs) const {
+			// Rounded at n number of decimal places for eliminating float errors
+			float r_x = std::floor(x * VERT_PRECISION);
+			float r_y = std::floor(y * VERT_PRECISION);
+			float r_z = std::floor(z * VERT_PRECISION);
+			float r_rhs_x = std::floor(rhs.x * VERT_PRECISION);
+			float r_rhs_y = std::floor(rhs.y * VERT_PRECISION);
+			float r_rhs_z = std::floor(rhs.z * VERT_PRECISION);
 			// First checks x, then y, then z in that order
-			return x != rhs.x ? x < rhs.x : (y != rhs.y ? y < rhs.y : z < rhs.z);
+			return r_x != r_rhs_x ? r_x < r_rhs_x : (r_y != r_rhs_y ? r_y < r_rhs_y : r_z < r_rhs_z);
 		};
 		bool operator==(const qvec3 &rhs) const {
-			return x == rhs.x && y == rhs.y && z == rhs.z;
+			// Rounded at n number of decimal places for eliminating float errors
+			float r_x = std::floor(x * VERT_PRECISION);
+			float r_y = std::floor(y * VERT_PRECISION);
+			float r_z = std::floor(z * VERT_PRECISION);
+			float r_rhs_x = std::floor(rhs.x * VERT_PRECISION);
+			float r_rhs_y = std::floor(rhs.y * VERT_PRECISION);
+			float r_rhs_z = std::floor(rhs.z * VERT_PRECISION);
+			return r_x == r_rhs_x && r_y == r_rhs_y && r_z == r_rhs_z;
 		};
 	};
 	class QuadFace {
@@ -132,8 +146,10 @@ namespace qg {
 		vector<qvec3> verts; // Ordered Unique Vert List - ordered by x,y,z in that order
 		vector<QuadFace> quadFaces; // Ordered Unique Face List - ordered by faceIndex
 
+		map<qvec3, int> vert_index_reverse_map;
 		map<int, vector<int>> indexFaceIndexList_map;
 
+		void rebuild_vert_index_reverse_map();
 		void rebuild_indexFaceIndexList_map();
 		void dropVerts_update_indexFaceIndexList_map(vector<int> indices);
 		/*
