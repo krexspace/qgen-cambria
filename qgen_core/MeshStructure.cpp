@@ -15,6 +15,10 @@ namespace qg {
 	//}
 	// Atomic operation
 	void MeshStructure::dropVerts(vector<int> indices) {
+		// Looks up verts from vert cloud vector. Should be called
+		// before erase from above.
+		dropVerts_update_vert_index_reverse_map(indices);
+		
 		std::set<int> index_set(indices.begin(), indices.end());
 		
 		// Use a reverse iterator
@@ -30,6 +34,12 @@ namespace qg {
 	void MeshStructure::dropVerts_update_indexFaceIndexList_map(vector<int> indices) {
 		for (int ix : indices) {
 			indexFaceIndexList_map.erase(ix);
+		}
+	}
+	void MeshStructure::dropVerts_update_vert_index_reverse_map(vector<int> indices) {
+		for (int ix : indices) {
+			qvec3 v = verts[ix];
+			vert_index_reverse_map.erase(v);
 		}
 	}
 

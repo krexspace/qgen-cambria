@@ -143,6 +143,7 @@ namespace qg {
 		void dropVerts(vector<int> indices);
 	private:
 		// ordered set of unique vertices
+		// VERT CLOUD
 		vector<qvec3> verts; // Ordered Unique Vert List - ordered by x,y,z in that order
 		vector<QuadFace> quadFaces; // Ordered Unique Face List - ordered by faceIndex
 
@@ -152,6 +153,8 @@ namespace qg {
 		void rebuild_vert_index_reverse_map();
 		void rebuild_indexFaceIndexList_map();
 		void dropVerts_update_indexFaceIndexList_map(vector<int> indices);
+		
+		void dropVerts_update_vert_index_reverse_map(vector<int> indices); //TODO NEXT
 		/*
 		// Named groups store
 		unordered_map<string, VertGroup> vertGroupMap;
