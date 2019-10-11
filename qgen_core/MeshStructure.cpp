@@ -21,11 +21,16 @@ namespace qg {
 		std::set<int>::reverse_iterator rit;
 		for (rit = index_set.rbegin(); rit != index_set.rend(); ++rit) {
 			verts.erase(verts.begin() + *rit);
-		}			
+		}
+
+		// Update face index map
+		dropVerts_update_indexFaceIndexList_map(indices);
 	}
 
 	void MeshStructure::dropVerts_update_indexFaceIndexList_map(vector<int> indices) {
-
+		for (int ix : indices) {
+			indexFaceIndexList_map.erase(ix);
+		}
 	}
 
 	void MeshStructure::rebuild_indexFaceIndexList_map() {
