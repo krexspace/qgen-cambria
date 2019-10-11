@@ -35,11 +35,13 @@ namespace qg {
 			for (int ix : qf.indices) {
 				auto pos = indexFaceIndexList_map.find(ix);
 				if (pos == indexFaceIndexList_map.end()) {
+					// Add new list
 					vector<int> face_index_vec;
 					face_index_vec.push_back(qf_index);
 					indexFaceIndexList_map[ix] = face_index_vec;
 				}
 				else {
+					// List is existing, append index 
 					vector<int> face_index_vec = pos->second;
 					face_index_vec.push_back(qf_index);
 				}
