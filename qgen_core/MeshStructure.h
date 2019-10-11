@@ -40,21 +40,21 @@ namespace qg {
 	class QuadFace {
 	public:
 		// std::array used instead of c style arrays
-		array<long, 4> indices;
+		array<int, 4> indices;
 		array<qvec2, 4> uvs; // four pairs
 		array<qvec3, 4> normals; // four vector
-		long faceIndex; // Can be used to capture construction order
-		// Other possible
-		// markers
-		// vetex_colors
-		// group_info
+		//long faceIndex; // Can be used to capture construction order
+		//// Other possible
+		//// markers
+		//// vetex_colors
+		//// group_info
 
-		bool operator<(const QuadFace &rhs) const {
-			return faceIndex < rhs.faceIndex;
-		};
-		bool operator==(const QuadFace &rhs) const {
-			return faceIndex == rhs.faceIndex;
-		};
+		//bool operator<(const QuadFace &rhs) const {
+		//	return faceIndex < rhs.faceIndex;
+		//};
+		//bool operator==(const QuadFace &rhs) const {
+		//	return faceIndex == rhs.faceIndex;
+		//};
 	};
 	struct QuadFaceDTO {
 		qvec3 verts[4]; // four vector
@@ -86,7 +86,7 @@ namespace std {
 			return h;
 		}
 	};
-	template<> struct hash<qg::QuadFace> {
+	/*template<> struct hash<qg::QuadFace> {
 	public:
 		size_t operator()(const qg::QuadFace &s) const
 		{
@@ -94,7 +94,7 @@ namespace std {
 			qg::hash_combine(h, s.faceIndex);
 			return h;
 		}
-	};
+	};*/
 }
 
 namespace qg {
@@ -115,10 +115,27 @@ namespace qg {
 	// Contains the verts and the windin
 	class MeshStructure {
 	public	:
+		
+		/*
+		ref: https://thispointer.com/map-vs-unordered_map-when-to-choose-one-over-another/
+		Time complexity for searching elements in std::map is O(log n).Even in
+		worst case it will be O(log n) because elements are stored internally as
+		Balanced Binary Search tree(BST).
+
+		Whereas, in std::unordered_map best case time complexity for
+		searching is O(1).Where as, if hash code function is not good then,
+		worst case complexity can be O(n) (In case all keys are in same bucket).
+		*/
+		void dropVerts(vector<int> indices);
+	private:
 		// ordered set of unique vertices
 		vector<qvec3> verts; // Ordered Unique Vert List - ordered by x,y,z in that order
 		vector<QuadFace> quadFaces; // Ordered Unique Face List - ordered by faceIndex
 
+		map<int, vector<int>> indexFaceIndexList_map;
+
+		void rebuild_indexFaceIndexList_map();
+		void dropVerts_update_indexFaceIndexList_map(vector<int> indices);
 		/*
 		// Named groups store
 		unordered_map<string, VertGroup> vertGroupMap;
@@ -126,7 +143,7 @@ namespace qg {
 
 		// Key mappping structure used for queries
 		// Use this for reverse lookup of index by vert pointer
-		unordered_map<long, vector<QuadFace*>> indexFacePointerMap;
+		;
 		unordered_map<long, vector<string>> indexVertGroupNameMap;
 		unordered_map<long, vector<string>> indexFaceGroupNameMap; // Check if required and correct
 		
@@ -135,7 +152,9 @@ namespace qg {
 		void addFaceBatch(const vector<QuadFaceDTO> faceList);
 		void deleteFace(long faceIndex);
 		*/
-		void dropVerts(vector<int> indices);
+		// ATOMIC OPERATIONS //
+		
+		
 	};
 }
 // end MESH DATA //

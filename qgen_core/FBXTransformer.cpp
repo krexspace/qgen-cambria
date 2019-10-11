@@ -89,6 +89,5 @@ namespace qg {
 
 		// return the FbxNode
 		return lNode;
-		
 	}
 }
