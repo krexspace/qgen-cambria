@@ -23,6 +23,7 @@ namespace qg {
 			return x == rhs.x && y == rhs.y;
 		};
 	};
+// Number of decimal places of precision expected
 #define VERT_PRECISION 1000
 	struct qvec3 {
 		float x;
@@ -94,9 +95,14 @@ namespace std {
 		size_t operator()(const qg::qvec3 &s) const
 		{
 			std::size_t h = 0;
-			qg::hash_combine(h, s.x);
-			qg::hash_combine(h, s.y);
-			qg::hash_combine(h, s.z);
+
+			float r_x = std::floor(s.x * VERT_PRECISION);
+			float r_y = std::floor(s.y * VERT_PRECISION);
+			float r_z = std::floor(s.z * VERT_PRECISION);
+
+			qg::hash_combine(h, r_x);
+			qg::hash_combine(h, r_y);
+			qg::hash_combine(h, r_z);
 			return h;
 		}
 	};
@@ -126,7 +132,7 @@ namespace qg {
 	};
 
 	// Long indices range based
-	// Contains the verts and the windin
+	// Contains the verts and the winding
 	class MeshStructure {
 	public	:
 		
@@ -145,6 +151,7 @@ namespace qg {
 		// ordered set of unique vertices
 		// VERT CLOUD
 		vector<qvec3> verts; // Ordered Unique Vert List - ordered by x,y,z in that order
+		// FACE WIRING, NORMALS, UVS
 		vector<QuadFace> quadFaces; // Ordered Unique Face List - ordered by faceIndex
 
 		map<qvec3, int> vert_index_reverse_map;
