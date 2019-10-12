@@ -24,33 +24,60 @@ namespace qg {
 		};
 	};
 // Number of decimal places of precision expected
-#define VERT_PRECISION 1000
+
 	struct qvec3 {
 		float x;
 		float y;
 		float z;
+		
+		/*qvec3(float xx, float yy, float zz) {
+			x = std::round(xx * VERT_PRECISION);
+			y = std::round(yy * VERT_PRECISION);
+			z = std::round(zz * VERT_PRECISION);
+		};*/
+
+		string to_string() {
+			return "{" + std::to_string(x) + ',' + std::to_string(y) + ',' + std::to_string(z) + "}";
+		};
 
 		bool operator<(const qvec3 &rhs) const {
 			// Rounded at n number of decimal places for eliminating float errors
-			float r_x = std::floor(x * VERT_PRECISION);
-			float r_y = std::floor(y * VERT_PRECISION);
-			float r_z = std::floor(z * VERT_PRECISION);
-			float r_rhs_x = std::floor(rhs.x * VERT_PRECISION);
-			float r_rhs_y = std::floor(rhs.y * VERT_PRECISION);
-			float r_rhs_z = std::floor(rhs.z * VERT_PRECISION);
+			float r_x = std::round(x * VERT_PRECISION);
+			float r_y = std::round(y * VERT_PRECISION);
+			//cout << "r_y <: " << r_y << endl;
+			float r_z = std::round(z * VERT_PRECISION);
+			float r_rhs_x = std::round(rhs.x * VERT_PRECISION);
+			float r_rhs_y = std::round(rhs.y * VERT_PRECISION);
+			float r_rhs_z = std::round(rhs.z * VERT_PRECISION);
 			// First checks x, then y, then z in that order
 			return r_x != r_rhs_x ? r_x < r_rhs_x : (r_y != r_rhs_y ? r_y < r_rhs_y : r_z < r_rhs_z);
 		};
+		bool operator>(const qvec3 &rhs) const {
+			// Rounded at n number of decimal places for eliminating float errors
+			float r_x = std::round(x * VERT_PRECISION);
+			float r_y = std::round(y * VERT_PRECISION);
+			//cout << "r_y <: " << r_y << endl;
+			float r_z = std::round(z * VERT_PRECISION);
+			float r_rhs_x = std::round(rhs.x * VERT_PRECISION);
+			float r_rhs_y = std::round(rhs.y * VERT_PRECISION);
+			float r_rhs_z = std::round(rhs.z * VERT_PRECISION);
+			// First checks x, then y, then z in that order
+			return r_x != r_rhs_x ? r_x > r_rhs_x : (r_y != r_rhs_y ? r_y > r_rhs_y : r_z > r_rhs_z);
+		};
 		bool operator==(const qvec3 &rhs) const {
 			// Rounded at n number of decimal places for eliminating float errors
-			float r_x = std::floor(x * VERT_PRECISION);
-			float r_y = std::floor(y * VERT_PRECISION);
-			float r_z = std::floor(z * VERT_PRECISION);
-			float r_rhs_x = std::floor(rhs.x * VERT_PRECISION);
-			float r_rhs_y = std::floor(rhs.y * VERT_PRECISION);
-			float r_rhs_z = std::floor(rhs.z * VERT_PRECISION);
+			float r_x = std::round(x * VERT_PRECISION);
+			float r_y = std::round(y * VERT_PRECISION);
+			cout << "r_y ==: " << r_y << endl;
+			float r_z = std::round(z * VERT_PRECISION);
+			float r_rhs_x = std::round(rhs.x * VERT_PRECISION);
+			float r_rhs_y = std::round(rhs.y * VERT_PRECISION);
+			float r_rhs_z = std::round(rhs.z * VERT_PRECISION);
 			return r_x == r_rhs_x && r_y == r_rhs_y && r_z == r_rhs_z;
 		};
+		bool operator!=(const qvec3 &rhs) const {
+			return !(*this == rhs);
+		}
 	};
 	class QuadFace {
 	public:
@@ -96,13 +123,14 @@ namespace std {
 		{
 			std::size_t h = 0;
 
-			float r_x = std::floor(s.x * VERT_PRECISION);
-			float r_y = std::floor(s.y * VERT_PRECISION);
-			float r_z = std::floor(s.z * VERT_PRECISION);
+			float r_x = std::round(s.x * VERT_PRECISION);
+			float r_y = std::round(s.y * VERT_PRECISION);
+			float r_z = std::round(s.z * VERT_PRECISION);
 
 			qg::hash_combine(h, r_x);
 			qg::hash_combine(h, r_y);
 			qg::hash_combine(h, r_z);
+			//cout << "hash :" << h << endl;
 			return h;
 		}
 	};

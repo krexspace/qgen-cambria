@@ -1,9 +1,11 @@
 #pragma once
+#define NDEBUG
+#include <assert.h>
+
 #define _USE_MATH_DEFINES
 #include <math.h>
 #include <ctype.h>
 #include <stdarg.h>
-#include <assert.h>
 #include <limits>
 #include <iostream>
 #include <string>
@@ -35,3 +37,6 @@
 
 // FBX SDK
 #include <fbxsdk.h>
+
+// App Specific
+#define VERT_PRECISION 1

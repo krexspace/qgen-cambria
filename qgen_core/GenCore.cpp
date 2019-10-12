@@ -1,13 +1,10 @@
-//--
-#include <iostream>
-#include <string>
-#include <chrono>
-
 #include "GenCore.h"
+
 #include "ComputeLib.h"
 #include "MeshStructure.h"
 #include "MeshBuilder.h"
 #include "FBXTransformer.h"
+#include "CoreTester.h"
 
 using namespace std::chrono;
 using namespace std;
@@ -255,6 +252,7 @@ namespace qg {
 			gMeshXPos,
 			gMeshYPos,
 			gMeshZPos,
+
 			gMeshRotationAxis,
 			pWithTexture,
 			pAnimate
@@ -370,14 +368,19 @@ namespace qg {
 		cout << S.size() << endl;
 	}
 	void invokeTests() {
-		testMeshStructure();
+		//testMeshStructure()
+		//test_vertMerge_1();
 	}
 }
 
 
+#ifdef TEST_MODE
+//qg::invokeTests();
+#else
+
 int main(int argc, const char* argv[])
 {
-	
+
 	cout << "QGEN Version 0.0.5";
 	std::string outFileName = "mgen_";
 	milliseconds ms = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
@@ -406,6 +409,7 @@ int main(int argc, const char* argv[])
 	// dont forget to delete the SdkManager 
 	// and all objects created by the SDK manager
 	qg::DestroySdkObjects(qg::gSdkManager, true);
+
 	
-	//qg::invokeTests();
 }
+#endif
