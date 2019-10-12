@@ -39,4 +39,4 @@
 #include <fbxsdk.h>
 
 // App Specific
-#define VERT_PRECISION 1
+#define VERT_PRECISION 1000

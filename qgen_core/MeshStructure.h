@@ -68,7 +68,7 @@ namespace qg {
 			// Rounded at n number of decimal places for eliminating float errors
 			float r_x = std::round(x * VERT_PRECISION);
 			float r_y = std::round(y * VERT_PRECISION);
-			cout << "r_y ==: " << r_y << endl;
+			//cout << "r_y ==: " << r_y << endl;
 			float r_z = std::round(z * VERT_PRECISION);
 			float r_rhs_x = std::round(rhs.x * VERT_PRECISION);
 			float r_rhs_y = std::round(rhs.y * VERT_PRECISION);
