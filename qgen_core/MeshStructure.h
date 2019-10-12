@@ -135,8 +135,19 @@ namespace qg {
 	// Contains the verts and the winding
 	class MeshStructure {
 	public	:
+		// ordered set of unique vertices
+		// VERT CLOUD
+		vector<qvec3> verts; // Ordered Unique Vert List - ordered by x,y,z in that order
+		// FACE WIRING, NORMALS, UVS
+		vector<QuadFace> quadFaces; // Ordered Unique Face List - ordered by faceIndex
 		
+									//--- ATOMIC MESH OPERATIONS ---//
+		// Make a hole in the mesh by dropping verts and 
+		// re-adjustng the mesh structure
+		void dropVerts(vector<int> indices);
+	private:
 		/*
+		## maps vs unordered_maps ##
 		ref: https://thispointer.com/map-vs-unordered_map-when-to-choose-one-over-another/
 		Time complexity for searching elements in std::map is O(log n).Even in
 		worst case it will be O(log n) because elements are stored internally as
@@ -146,18 +157,12 @@ namespace qg {
 		searching is O(1).Where as, if hash code function is not good then,
 		worst case complexity can be O(n) (In case all keys are in same bucket).
 		*/
-		void dropVerts(vector<int> indices);
-	private:
-		// ordered set of unique vertices
-		// VERT CLOUD
-		vector<qvec3> verts; // Ordered Unique Vert List - ordered by x,y,z in that order
-		// FACE WIRING, NORMALS, UVS
-		vector<QuadFace> quadFaces; // Ordered Unique Face List - ordered by faceIndex
 
 		map<qvec3, int> vert_index_reverse_map;
 		// CRITICAL MAP FOR PERFORMANCE and SCALING 
-		// Enabkes reverse lookup of face objects by index
+		// Enables reverse lookup of face objects by index
 		map<int, vector<int>> indexFaceIndexList_map;
+
 
 		void rebuild_vert_index_reverse_map();
 		void rebuild_indexFaceIndexList_map();
@@ -180,9 +185,6 @@ namespace qg {
 		void addFaceBatch(const vector<QuadFaceDTO> faceList);
 		void deleteFace(long faceIndex);
 		*/
-		// ATOMIC OPERATIONS //
-		
-		
 	};
 }
 // end MESH DATA //
