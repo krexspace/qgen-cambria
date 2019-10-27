@@ -85,6 +85,9 @@ namespace qg {
 		array<int, 4> indices;
 		array<qvec2, 4> uvs; // four pairs
 		array<qvec3, 4> normals; // four vector
+
+		bool has_uvs = false;
+		bool has_normals = false;
 		//long faceIndex; // Can be used to capture construction order
 		//// Other possible
 		//// markers
@@ -148,7 +151,7 @@ namespace std {
 namespace qg {
 	
 	enum class VertGroupType { GROUP, EDGE, BORDER_EDGE };
-	class VertGroup {
+	/*class VertGroup {
 		vector<qvec3*> vertPointers;
 		string name;
 		VertGroupType type = VertGroupType::GROUP;
@@ -158,7 +161,21 @@ namespace qg {
 		vector<QuadFace*> quadFacePointers;
 		string name;
 	};
+	*/
+	class VertString {
+	public:
+		vector<qvec3> verts;
+		vector<float> uv_scale; // optional uv scale
+		bool has_uv_scale = false;
+		VertGroupType type = VertGroupType::EDGE;
+	};
 
+	// Applies to existing meshes only
+	// An array of indexes are meaningless without vert position data
+	/*struct VertIndexVector {
+		vector<int> indices;
+		VertGroupType type = VertGroupType::EDGE;
+	};*/
 	// Long indices range based
 	// Contains the verts and the winding
 	class MeshStructure {
@@ -168,11 +185,18 @@ namespace qg {
 		vector<qvec3> verts; // Ordered Unique Vert List - ordered by x,y,z in that order
 		// FACE WIRING, NORMALS, UVS
 		vector<QuadFace> quadFaces; // Ordered Unique Face List - ordered by faceIndex
-		
+		// Current active border edge or hole for next addition iteration
+		vector<int> currentBorderIndices;
+		unordered_map<string, VertString> holes_and_borders; // string key, values are actual verts not indices
 									//--- ATOMIC MESH OPERATIONS ---//
 		// Make a hole in the mesh by dropping verts and 
 		// re-adjustng the mesh structure
 		void dropVerts(vector<int> indices);
+
+		//MeshStructure operator+(const MeshStructure &rhs) const; // mesh add operation
+		//MeshStructure operator+(const VertString &rhs) const; // mesh add operation
+		//MeshStructure operator-(const VertString &rhs) const; // mesh subtraction or create hole operation
+		//MeshStructure operator-(const vector<int> &rhs_indices) const; // mesh subtraction or create hole operation
 	private:
 		/*
 		## maps vs unordered_maps ##
